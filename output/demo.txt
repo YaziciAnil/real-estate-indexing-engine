@@ -1,0 +1,78 @@
+House H101 Added Successfully
+House H102 Added Successfully
+House H103 Added Successfully
+House H104 Added Successfully
+House H105 Added Successfully
+House H106 Added Successfully
+House H107 Added Successfully
+House H108 Added Successfully
+House H109 Added Successfully
+House H110 Added Successfully
+House H111 Added Successfully
+House H112 Added Successfully
+House H113 Added Successfully
+House H114 Added Successfully
+House H115 Added Successfully
+House H116 Added Successfully
+House H117 Added Successfully
+House H118 Added Successfully
+House H119 Added Successfully
+House H120 Added Successfully
+Count : 20
+TotalPrice is 4950000
+H111 500000 90 P1
+H113 700000 70 P1
+H101 900000 65 P1
+H105 900000 65 P1
+H115 950000 85 P1
+H114 1000000 60 P1
+H117 400000 25 P2
+H107 450000 30 P2
+H104 600000 40 P2
+H102 750000 55 P2
+House H111 Sold
+ERROR
+House H105 Updated Successfully
+House H113 Sold
+Search D1 Closed
+ERROR
+H102 750000 55 P1
+H119 800000 58 P1
+H117 400000 25 P2
+H107 450000 30 P2
+H104 600000 40 P2
+House H117 Sold
+Search D1 Closed
+House H106 Removed Successfully
+ERROR
+ERROR
+ERROR
+H107 450000 30 P2
+H104 600000 40 P2
+H102 750000 55 P2
+H119 800000 58 P2
+H109 850000 50 P2
+H101 900000 65 P2
+ERROR
+House H107 Sold
+Search D2 Closed
+H102 750000 55 P1
+H119 800000 58 P1
+H109 850000 50 P1
+H101 900000 65 P1
+House H101 Sold
+Count : 14
+TotalPrice is 4650000
+House H112 Removed Successfully
+House H120 Updated Successfully
+H115 950000 85 P1
+H104 600000 40 P2
+H102 750000 55 P2
+H119 800000 58 P2
+H109 850000 50 P2
+H105 920000 65 P2
+H114 1000000 60 P2
+H103 1200000 80 P3
+ERROR
+Search D4 Closed
+Count : 13
