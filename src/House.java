@@ -14,17 +14,15 @@ public class House implements Comparable<House> {
 
     @Override
     public int compareTo(House h) {
-        // 1. Fiyat: Artan (Küçük fiyat önce)
+
         if (this.price != h.price) {
             return Integer.compare(this.price, h.price);
         }
 
-        // 2. Boyut: Azalan (Büyük metrekare önce)
         if (this.size != h.size) {
             return Integer.compare(h.size, this.size);
         }
 
-        // 3. Eklenme Zamanı: Artan (İlk eklenen önce)
         return Long.compare(this.insertionTime, h.insertionTime);
     }
 
