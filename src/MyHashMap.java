@@ -68,7 +68,6 @@ public class MyHashMap<T> {
             hashVal = key.charAt(i) + prime * hashVal;
         }
 
-        // Math.abs(Integer.MIN_VALUE) negatif kalıp indexoutofbounds vermesin diye bitmask eklendi
         return (hashVal & 0x7fffffff) % capacity;
     }
 
@@ -105,7 +104,7 @@ public class MyHashMap<T> {
         if(hashList[keyHash] == null) {
             hashList[keyHash] = node;
             size += 1;
-            if(size >= capacity * 0.75) rehash();
+            if(size >= capacity * loadFactor) rehash();
         }
         else {
             HashNode<T> h = hashList[keyHash];
@@ -117,7 +116,7 @@ public class MyHashMap<T> {
                 if(h.next == null){
                     h.next = node;
                     size += 1;
-                    if(size >= capacity * 0.75) rehash();
+                    if(size >= capacity * loadFactor) rehash();
                     break;
                 }
                 h = h.next;

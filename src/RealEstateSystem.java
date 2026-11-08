@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class RealEstateSystem {
     MyHashMap<House> houseList;
-    MyHashMap<Boolean> retiredIDList; // HashSet yerine MyHashMap<Boolean>
+    MyHashMap<Boolean> retiredIDList;
     MyHashMap<SearchSession> activeSessionList;
     MyTree houseTree;
     private long globalTimer = 0;
@@ -62,14 +62,14 @@ public class RealEstateSystem {
         ArrayList<House> result = new ArrayList<>();
         ArrayList<String> priorityList = new ArrayList<>();
 
-        // 1. P1 Havuzu
+        // 1. P1
         ArrayList<House> p1 = houseTree.findP1(maxPrice, minSize, count);
         for (House h : p1) {
             result.add(h);
             priorityList.add("P1");
         }
 
-        // 2. P2 Havuzu
+        // 2. P2
         int needed = count - result.size();
         if (needed > 0) {
             ArrayList<House> p2 = houseTree.findP2(maxPrice, minSize, needed);
@@ -79,7 +79,7 @@ public class RealEstateSystem {
             }
         }
 
-        // 3. P3 Havuzu
+        // 3. P3
         needed = count - result.size();
         if (needed > 0) {
             ArrayList<House> p3 = houseTree.findP3(maxPrice, minSize, needed);
@@ -89,7 +89,7 @@ public class RealEstateSystem {
             }
         }
 
-        // 4. P4 Havuzu
+        // 4. P4
         needed = count - result.size();
         if (needed > 0) {
             ArrayList<House> p4 = houseTree.findP4(maxPrice, minSize, needed);
