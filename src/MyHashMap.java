@@ -1,5 +1,4 @@
-
-
+/** Hash map with String keys using separate chaining and prime-sized resizing. */
 @SuppressWarnings("unchecked")
 public class MyHashMap<T> {
 
@@ -14,6 +13,7 @@ public class MyHashMap<T> {
     HashNode<T>[] hashList = new HashNode[capacity];
 
 
+    /** A single key-value entry in a bucket chain. */
     public static class HashNode<T> {
         String key;
         T value;
@@ -25,6 +25,7 @@ public class MyHashMap<T> {
         }
     }
 
+    /** Grows the table to the next prime capacity and redistributes all entries. */
     private void rehash() {
         if (capacityIndex < PRIMES.length - 1) {
             capacityIndex++;
@@ -57,6 +58,7 @@ public class MyHashMap<T> {
 
 
 
+    /** Polynomial string hash mapped to a bucket index. */
     public int getHash(String key){
         if(key == null) return 0;
 
@@ -70,6 +72,7 @@ public class MyHashMap<T> {
         return (hashVal & 0x7fffffff) % capacity;
     }
 
+    /** Returns true if the key exists in the map. */
     public boolean containsKey(String key){
         int keyHash = getHash(key);
         HashNode<T> h = hashList[keyHash];
@@ -83,6 +86,7 @@ public class MyHashMap<T> {
         return false;
     }
 
+    /** Returns the value for the key, or null if absent. */
     public T get(String key){
         int keyHash = getHash(key);
         HashNode<T> h = hashList[keyHash];
@@ -95,6 +99,7 @@ public class MyHashMap<T> {
         return null;
     }
 
+    /** Inserts the key or overwrites its value if it already exists. */
     public void put(String key, T value){
 
         int keyHash = getHash(key);
@@ -124,6 +129,7 @@ public class MyHashMap<T> {
 
     }
 
+    /** Removes the key from the map if present. */
     public void remove(String key){
         int keyHash = getHash(key);
         HashNode<T> h = hashList[keyHash];

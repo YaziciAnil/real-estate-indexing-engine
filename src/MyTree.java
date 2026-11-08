@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+/** AVL tree of houses; each node also stores the max size in its subtree for pruning. */
 public class MyTree {
 
     public class TreeNode {
@@ -35,6 +36,7 @@ public class MyTree {
         return (node == null) ? 0 : node.maxSubtreeSize;
     }
 
+    /** Recomputes height and max subtree size from the children. */
     private void updateNode(TreeNode node) {
         if (node == null) return;
 
@@ -54,6 +56,7 @@ public class MyTree {
         return (node == null) ? 0 : getHeight(node.left) - getHeight(node.right);
     }
 
+    /** Right rotation for rebalancing. */
     private TreeNode rotateRight(TreeNode node) {
         TreeNode x = node.left;
         TreeNode temp = x.right;
@@ -67,6 +70,7 @@ public class MyTree {
         return x;
     }
 
+    /** Left rotation for rebalancing. */
     private TreeNode rotateLeft(TreeNode node) {
         TreeNode x = node.right;
         TreeNode temp = x.left;
@@ -80,7 +84,7 @@ public class MyTree {
         return x;
     }
 
-    // --- INSERT ---
+    /** Inserts a house and rebalances the tree. */
     public void insert(House t) {
         this.root = insertRecursive(this.root, t);
     }
@@ -90,13 +94,13 @@ public class MyTree {
 
         int cmp = t.compareTo(current.val);
 
-        // t daha küçükse SOLA, t daha büyükse SAĞA
+        // Smaller goes left, larger goes right
         if (cmp < 0) {
             current.left = insertRecursive(current.left, t);
         } else if (cmp > 0) {
             current.right = insertRecursive(current.right, t);
         } else {
-            return current; // Eşit eleman
+            return current; // Duplicate element
         }
 
         updateNode(current);
@@ -128,6 +132,7 @@ public class MyTree {
     }
 
 
+    /** Returns the leftmost (smallest) node of a subtree. */
     private TreeNode getMinValueNode(TreeNode node) {
         TreeNode current = node;
         while (current.left != null) {
@@ -136,7 +141,7 @@ public class MyTree {
         return current;
     }
 
-    // --- DELETE ---
+    /** Deletes a house and rebalances the tree. */
     public void delete(House house) {
         this.root = deleteRecursive(this.root, house);
     }
@@ -153,7 +158,7 @@ public class MyTree {
         } else if (cmp > 0) {
             current.right = deleteRecursive(current.right, house);
         } else {
-            // Silme işlemi
+            // Node found: remove it
             if (current.left == null || current.right == null) {
                 TreeNode temp = (current.left != null) ? current.left : current.right;
                 if (temp == null) {
@@ -201,7 +206,7 @@ public class MyTree {
     }
 
 
-    // --- FIND P1 ---
+    /** Collects up to count houses with price <= maxPrice and size >= minSize, in order. */
     public ArrayList<House> findP1(int maxPrice, int minSize, int count) {
         ArrayList<House> p1List = new ArrayList<>();
         collectP1(this.root, maxPrice, minSize, count, p1List);
@@ -211,25 +216,25 @@ public class MyTree {
     private void collectP1(TreeNode treeNode, int maxPrice, int minSize, int count, ArrayList<House> p1) {
         if (treeNode == null || p1.size() >= count) return;
 
-        // Metrekare budaması
+        // Prune subtrees with no house large enough
         if (treeNode.maxSubtreeSize < minSize) return;
 
-        // Sol dal
+        // Left subtree first (cheaper houses)
         collectP1(treeNode.left, maxPrice, minSize, count, p1);
 
         if (p1.size() >= count) return;
 
-        // Kök kontrolü
+        // Current node
         if (treeNode.val.getPrice() <= maxPrice) {
             if (treeNode.val.getSize() >= minSize) {
                 p1.add(treeNode.val);
             }
-            // Fiyat sınırını aşmadıysa sağa in
+            // Go right only while within budget
             collectP1(treeNode.right, maxPrice, minSize, count, p1);
         }
     }
 
-    // --- FIND P2 ---
+    /** Collects up to count houses with price <= maxPrice and size < minSize, in order. */
     public ArrayList<House> findP2(int maxPrice, int minSize, int count) {
         ArrayList<House> p2List = new ArrayList<>();
         collectP2(this.root, maxPrice, minSize, count, p2List);
@@ -239,23 +244,23 @@ public class MyTree {
     private void collectP2(TreeNode treeNode, int maxPrice, int minSize, int count, ArrayList<House> p2) {
         if (treeNode == null || p2.size() >= count) return;
 
-        // Sol dal
+        // Left subtree first (cheaper houses)
         collectP2(treeNode.left, maxPrice, minSize, count, p2);
 
         if (p2.size() >= count) return;
 
-        // Kök kontrolü
+        // Current node
         if (treeNode.val.getPrice() <= maxPrice) {
-            // P2 şartı: Bütçe içinde ama metrekare yetersiz (< minSize)
+            // P2: within budget but below minimum size
             if (treeNode.val.getSize() < minSize) {
                 p2.add(treeNode.val);
             }
-            // Fiyat sınırını aşmadığı sürece sağa git
+            // Go right only while within budget
             collectP2(treeNode.right, maxPrice, minSize, count, p2);
         }
     }
 
-    // --- FIND P3 (Price > maxPrice, Size >= minSize) ---
+    /** Collects up to count houses with price > maxPrice and size >= minSize, in order. */
     public ArrayList<House> findP3(int maxPrice, int minSize, int count) {
         ArrayList<House> p3List = new ArrayList<>();
         collectP3(this.root, maxPrice, minSize, count, p3List);
@@ -265,26 +270,26 @@ public class MyTree {
     private void collectP3(TreeNode treeNode, int maxPrice, int minSize, int count, ArrayList<House> p3) {
         if (treeNode == null || p3.size() >= count) return;
 
-        // Metrekare budaması: bu dalda minSize'a eşit veya büyük ev yoksa girme
+        // Prune subtrees with no house large enough
         if (treeNode.maxSubtreeSize < minSize) return;
 
-        // Sol alt ağaç: Eğer sol tarafta maxPrice'tan büyük evler olma ihtimali varsa in
+        // Left subtree first (cheaper houses)
         collectP3(treeNode.left, maxPrice, minSize, count, p3);
 
         if (p3.size() >= count) return;
 
-        // Kök kontrolü
+        // Current node
         if (treeNode.val.getPrice() > maxPrice) {
             if (treeNode.val.getSize() >= minSize) {
                 p3.add(treeNode.val);
             }
         }
 
-        // Sağ alt ağaç (fiyat daha da büyür, P3 için her zaman potansiyel var)
+        // Right subtree (higher prices)
         collectP3(treeNode.right, maxPrice, minSize, count, p3);
     }
 
-    // --- FIND P4 (Price > maxPrice, Size < minSize) ---
+    /** Collects up to count houses with price > maxPrice and size < minSize, in order. */
     public ArrayList<House> findP4(int maxPrice, int minSize, int count) {
         ArrayList<House> p4List = new ArrayList<>();
         collectP4(this.root, maxPrice, minSize, count, p4List);
@@ -308,7 +313,7 @@ public class MyTree {
     }
 
 
-    // --- TOTAL PRICE ---
+    /** Sums prices of houses with price <= maxPrice and size >= minSize. */
     public long calculateTotalPrice(int maxPrice, int minSize) {
         return sumPriceRecursive(this.root, maxPrice, minSize);
     }

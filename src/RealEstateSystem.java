@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 
+/** Core logic: stores houses, search sessions and retired IDs. */
 public class RealEstateSystem {
     MyHashMap<House> houseList;
     MyHashMap<Boolean> retiredIDList;
     MyHashMap<SearchSession> activeSessionList;
     MyTree houseTree;
-    private long globalTimer = 0;
+    private long globalTimer = 0; // insertion order counter
 
     public RealEstateSystem() {
         houseList = new MyHashMap<>();
@@ -14,6 +15,7 @@ public class RealEstateSystem {
         houseTree = new MyTree();
     }
 
+    /** Adds a new house; fails if the ID is active or retired. */
     public boolean addHouse(String id, int price, int size) {
         if (houseList.containsKey(id) || retiredIDList.containsKey(id)) return false;
         House house = new House(id, price, size);
@@ -24,6 +26,7 @@ public class RealEstateSystem {
         return true;
     }
 
+    /** Removes an active house and retires its ID. */
     public boolean removeHouse(String id) {
         if (houseList.containsKey(id)) {
             House currentHouse = houseList.get(id);
@@ -36,10 +39,12 @@ public class RealEstateSystem {
         return false;
     }
 
+    /** Changes a house's price; fails if missing or price is unchanged. */
     public boolean updatePrice(String id, int newPrice) {
         if (!houseList.containsKey(id)) return false;
 
         House h = houseList.get(id);
+        if (h.getPrice() == newPrice) return false;
 
         houseTree.delete(h);
         h.setPrice(newPrice);
@@ -49,10 +54,12 @@ public class RealEstateSystem {
         return true;
     }
 
+    /** Returns the number of active houses. */
     public int count() {
         return houseList.size();
     }
 
+    /** Builds a ranked result from P1-P4 pools and stores it as a new session. */
     public SearchSession search(String searchID, int minSize, int maxPrice, int count) {
         if (activeSessionList.containsKey(searchID)) return null;
         if (houseList.isEmpty()) return null;
@@ -115,10 +122,11 @@ public class RealEstateSystem {
         return session;
     }
 
+    /** Buys the house at index if it is still active and not updated since the search. */
     public House buy(String searchID, int index) {
         if (!activeSessionList.containsKey(searchID)) return null;
         SearchSession session = activeSessionList.get(searchID);
-        if (session.houseList.size() <= index) return null;
+        if (index < 0 || session.houseList.size() <= index) return null;
 
         House requestedHouse = session.houseList.get(index);
 
@@ -136,6 +144,7 @@ public class RealEstateSystem {
         return requestedHouse;
     }
 
+    /** Closes an open search session. */
     public boolean closeSearch(String searchID) {
         if (activeSessionList.containsKey(searchID)) {
             activeSessionList.remove(searchID);
@@ -144,6 +153,7 @@ public class RealEstateSystem {
         return false;
     }
 
+    /** Returns the total price of matching active houses. */
     public long totalPrice(int maxPrice, int minSize) {
         return houseTree.calculateTotalPrice(maxPrice, minSize);
     }

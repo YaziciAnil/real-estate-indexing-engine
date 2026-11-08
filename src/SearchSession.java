@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+/** A stored search result with each house's version and priority at search time. */
 public class SearchSession {
     String searchID;
     ArrayList<House> houseList = new ArrayList<>();
@@ -47,4 +48,3 @@ public class SearchSession {
     }
 
 }
-

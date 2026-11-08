@@ -1,9 +1,10 @@
+/** A house listing, ordered by price asc, size desc, then insertion time asc. */
 public class House implements Comparable<House> {
     String id;
     int price;
     int size;
     long insertionTime;
-    int version;
+    int version; // incremented on every price update
     String status; // active, sold, removed
 
     public House(String id, int price, int area) {
@@ -12,6 +13,7 @@ public class House implements Comparable<House> {
         this.size = area;
     }
 
+    /** Compares by price ascending, size descending, then insertion time ascending. */
     @Override
     public int compareTo(House h) {
 
@@ -74,6 +76,7 @@ public class House implements Comparable<House> {
         return status;
     }
 
+    /** Marks the house as updated so stale search results can detect it. */
     public void increaseVersion() {
         version += 1;
     }

@@ -4,9 +4,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-// javac *.java
-// time java -cp . Main ../input/input3.txt ../output/output33.txt
-// diff ../output/output3.txt ../output/output33.txt
+
 
 /** Entry point. The two command-line arguments are the input and output paths. */
 public class Main {
@@ -91,7 +89,7 @@ public class Main {
                             break;
 
                         case "Count":
-                            // Format: Count (parametresiz)
+                            // Format: Count
                             int cnt = realEstateSystem.count();
                             writer.write("Count : " + cnt + "\n");
                             break;
@@ -111,6 +109,7 @@ public class Main {
         }
     }
 
+    /** Splits a line by whitespace into tokens and returns the token count. */
     private static int tokenize(String line, String[] tokens) {
         int len = line.length();
         int tokenIdx = 0;
